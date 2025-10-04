@@ -5,155 +5,104 @@
 ## English
 
 ### Overview
-Comprehensive time series forecasting suite with multiple algorithms, interactive visualizations, and professional web interface. Features ARIMA, exponential smoothing, machine learning models, and advanced analytics for accurate time series prediction and analysis.
+Comprehensive time series forecasting suite with multiple algorithms, interactive visualizations, and a professional web interface. This toolkit is designed for accurate time series prediction and analysis, featuring robust models like ARIMA, Exponential Smoothing, Linear Regression, and Random Forest, alongside advanced analytical capabilities.
 
 ### Features
-- **Multiple Algorithms**: ARIMA, Exponential Smoothing, Linear Regression, Random Forest
-- **Interactive Dashboard**: Streamlit-based web interface with real-time updates
-- **Data Visualization**: Professional charts with Plotly and Matplotlib
-- **Forecast Accuracy**: Multiple evaluation metrics (MAE, RMSE, MAPE)
-- **Seasonal Decomposition**: Trend, seasonal, and residual analysis
-- **Data Upload**: Support for CSV files and sample datasets
-- **Export Results**: Download forecasts and visualizations
-- **Model Comparison**: Side-by-side algorithm performance analysis
+- **Multiple Algorithms**: Implements ARIMA, Exponential Smoothing, Linear Regression, and Random Forest for diverse forecasting needs.
+- **Interactive Dashboard**: A user-friendly web interface built with Streamlit, offering real-time updates and interactive controls.
+- **Data Visualization**: Utilizes Plotly for professional, interactive charts, enabling detailed exploration of historical data and forecasts.
+- **Forecast Accuracy Metrics**: Provides key evaluation metrics such as Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE) for model performance assessment.
+- **Seasonal Decomposition**: Analyzes time series into trend, seasonal, and residual components to understand underlying patterns.
+- **Data Handling**: Supports uploading custom CSV files and includes a sample dataset for immediate use.
+- **Export Results**: Allows downloading of forecast data and visualizations.
+- **Model Comparison**: Facilitates side-by-side analysis of different algorithm performances.
 
 ### Technologies Used
 - **Python 3.8+**
-- **Streamlit**: Web application framework
-- **Pandas**: Data manipulation and analysis
-- **NumPy**: Numerical computing
-- **Scikit-learn**: Machine learning algorithms
-- **Plotly**: Interactive visualizations
-- **Matplotlib & Seaborn**: Statistical plotting
-- **Statsmodels**: Statistical modeling
+- **Streamlit**: For building the interactive web application.
+- **Pandas**: Essential for data manipulation and analysis.
+- **NumPy**: Provides powerful numerical computing capabilities.
+- **Scikit-learn**: Offers various machine learning algorithms, including Linear Regression and RandomForestRegressor.
+- **Plotly**: For creating rich, interactive data visualizations.
+- **Statsmodels**: For statistical modeling, including ARIMA and Exponential Smoothing.
 
 ### Installation
 
-1. Clone the repository:
-```bash
-git clone https://github.com/galafis/Time-Series-Forecasting-Suite.git
-cd Time-Series-Forecasting-Suite
-```
+To set up the Time Series Forecasting Suite, follow these steps:
 
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/galafis/Time-Series-Forecasting-Suite.git
+    cd Time-Series-Forecasting-Suite
+    ```
 
-3. Run the application:
-```bash
-streamlit run forecasting_suite.py
-```
+2.  **Install dependencies**:
+    Ensure you have `pip` installed. Then, install the required Python packages:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-4. Open your browser to `http://localhost:8501`
+3.  **Run the application**:
+    Launch the Streamlit application from your terminal:
+    ```bash
+    streamlit run forecasting_suite.py
+    ```
+
+4.  **Access the application**:
+    Open your web browser and navigate to the local URL provided by Streamlit (usually `http://localhost:8501` or `http://localhost:8502`).
 
 ### Usage
 
 #### Web Interface
-1. **Data Input**: Upload CSV file or use sample data
-2. **Data Exploration**: View time series plots and statistics
-3. **Model Selection**: Choose forecasting algorithm and parameters
-4. **Generate Forecast**: Create predictions for specified periods
-5. **Evaluate Results**: Compare accuracy metrics and visualizations
-6. **Export**: Download forecasts and charts
+Once the application is running, you can interact with it through your web browser:
 
-#### Supported Data Formats
-- **CSV Files**: Date column + value column(s)
-- **Date Formats**: Automatic detection of common formats
-- **Frequency**: Daily, weekly, monthly, quarterly, yearly
-- **Missing Values**: Automatic handling and interpolation
-
-#### Python API
-```python
-from forecasting_suite import TimeSeriesForecaster
-
-# Initialize forecaster
-forecaster = TimeSeriesForecaster()
-
-# Load data
-data = forecaster.load_data('your_data.csv', date_col='date', value_col='value')
-
-# Fit model and forecast
-forecaster.fit_arima(data)
-forecast = forecaster.forecast(periods=30)
-
-# Evaluate accuracy
-metrics = forecaster.evaluate_forecast(actual, predicted)
-print(f"MAE: {metrics['mae']:.2f}")
-print(f"RMSE: {metrics['rmse']:.2f}")
-```
+1.  **Data Input**: Choose to use the provided sample data or upload your own CSV file. If uploading, select the appropriate date and value columns.
+2.  **Data Exploration**: Review the data overview, recent values, and time series components plots to understand your data.
+3.  **Model Selection**: From the sidebar, select your preferred forecasting algorithm (e.g., Random Forest, ARIMA).
+4.  **Generate Forecast**: Adjust the number of forecast days using the slider and click the "🚀 Train Models & Generate Forecast" button.
+5.  **Evaluate Results**: Observe the model performance metrics (MAE, RMSE) and the interactive forecast plot.
+6.  **Export**: Download the forecast data and charts as needed.
 
 ### Forecasting Models
 
 #### ARIMA (AutoRegressive Integrated Moving Average)
-- **Best for**: Stationary time series with trends
-- **Parameters**: Auto-selection using AIC/BIC criteria
-- **Seasonality**: SARIMA for seasonal patterns
+-   **Description**: A statistical model that uses past values to predict future ones, suitable for data with trends and seasonality.
+-   **Application**: Best for stationary time series with identifiable trends and seasonal patterns.
 
 #### Exponential Smoothing
-- **Simple**: Basic trend forecasting
-- **Double**: Trend and level smoothing
-- **Triple (Holt-Winters)**: Trend, level, and seasonality
+-   **Description**: A family of models that predict future values based on weighted averages of past observations, with weights decaying exponentially as observations get older.
+-   **Application**: Effective for data with trend and/or seasonal components, offering simple, double, and triple (Holt-Winters) variations.
 
 #### Machine Learning Models
-- **Linear Regression**: Simple trend-based forecasting
-- **Random Forest**: Non-linear pattern recognition
-- **Feature Engineering**: Lag features, rolling statistics
+-   **Linear Regression**: A straightforward model that predicts future values by fitting a linear equation to the observed data.
+-   **Random Forest**: An ensemble learning method that builds multiple decision trees and merges their predictions to improve accuracy and control overfitting. Excellent for capturing non-linear relationships.
+-   **Feature Engineering**: Both Linear Regression and Random Forest models leverage engineered features such as lag values and rolling statistics to enhance prediction capabilities.
 
-#### Ensemble Methods
-- **Model Averaging**: Combine multiple forecasts
-- **Weighted Ensemble**: Performance-based weighting
-- **Stacking**: Meta-learning approach
-
-### Features
+### Functionalities
 
 #### Data Preprocessing
-- **Missing Value Handling**: Forward fill, interpolation, mean imputation
-- **Outlier Detection**: Statistical and visual identification
-- **Stationarity Testing**: ADF test and differencing
-- **Seasonal Decomposition**: STL decomposition
+-   **Missing Value Handling**: Automatic interpolation (linear method) to fill gaps in the time series data.
+-   **Frequency Enforcement**: Ensures data is uniformly sampled (e.g., daily frequency) for consistent analysis.
 
 #### Visualization
-- **Time Series Plots**: Interactive line charts with zoom
-- **Forecast Plots**: Predictions with confidence intervals
-- **Residual Analysis**: Error distribution and autocorrelation
-- **Seasonal Plots**: Monthly/quarterly patterns
+-   **Interactive Time Series Plots**: Powered by Plotly, these charts allow zooming and panning for detailed data inspection.
+-   **Forecast Plots**: Visual representation of predictions, showing historical data, forecasted values, and a clear demarcation of the forecast start.
+-   **Time Series Components Plot**: Displays the decomposed trend, seasonal, and residual components of the time series.
 
 #### Model Evaluation
-- **Accuracy Metrics**: MAE, RMSE, MAPE, SMAPE
-- **Cross-Validation**: Time series split validation
-- **Residual Analysis**: Normality and independence tests
-- **Forecast Intervals**: Confidence and prediction intervals
+-   **Accuracy Metrics**: Provides Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE) for both training and testing datasets to assess model accuracy.
 
 ### Sample Datasets
-- **Stock Prices**: Daily stock market data
-- **Sales Data**: Monthly retail sales
-- **Weather**: Temperature and precipitation
-- **Economic Indicators**: GDP, inflation, unemployment
-
-### Configuration
-Customize forecasting parameters:
-```python
-config = {
-    'arima_order': (1, 1, 1),
-    'seasonal_order': (1, 1, 1, 12),
-    'forecast_periods': 30,
-    'confidence_level': 0.95
-}
-```
-
-### Performance Tips
-- **Data Quality**: Clean and consistent time series data
-- **Model Selection**: Use cross-validation for model comparison
-- **Seasonality**: Consider seasonal patterns in your data
-- **Forecast Horizon**: Shorter forecasts are generally more accurate
+-   The application includes a built-in sample dataset for immediate demonstration and testing purposes.
 
 ### Contributing
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-feature`)
-3. Commit your changes (`git commit -am 'Add new feature'`)
-4. Push to the branch (`git push origin feature/new-feature`)
-5. Create a Pull Request
+We welcome contributions to enhance the Time Series Forecasting Suite! Please follow these guidelines:
+
+1.  **Fork the repository**.
+2.  **Create a feature branch** (`git checkout -b feature/your-feature-name`).
+3.  **Commit your changes** (`git commit -am 'Add new feature'`).
+4.  **Push to the branch** (`git push origin feature/your-feature-name`).
+5.  **Create a Pull Request**.
 
 ### License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -163,156 +112,104 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Português
 
 ### Visão Geral
-Suite abrangente de previsão de séries temporais com múltiplos algoritmos, visualizações interativas e interface web profissional. Apresenta ARIMA, suavização exponencial, modelos de machine learning e análises avançadas para previsão e análise precisas de séries temporais.
+Suite abrangente de previsão de séries temporais com múltiplos algoritmos, visualizações interativas e uma interface web profissional. Este kit de ferramentas foi projetado para previsão e análise precisas de séries temporais, apresentando modelos robustos como ARIMA, Suavização Exponencial, Regressão Linear e Random Forest, juntamente com capacidades analíticas avançadas.
 
 ### Funcionalidades
-- **Múltiplos Algoritmos**: ARIMA, Suavização Exponencial, Regressão Linear, Random Forest
-- **Dashboard Interativo**: Interface web baseada em Streamlit com atualizações em tempo real
-- **Visualização de Dados**: Gráficos profissionais com Plotly e Matplotlib
-- **Precisão de Previsão**: Múltiplas métricas de avaliação (MAE, RMSE, MAPE)
-- **Decomposição Sazonal**: Análise de tendência, sazonalidade e resíduos
-- **Upload de Dados**: Suporte para arquivos CSV e datasets de exemplo
-- **Exportar Resultados**: Download de previsões e visualizações
-- **Comparação de Modelos**: Análise de performance lado a lado dos algoritmos
+-   **Múltiplos Algoritmos**: Implementa ARIMA, Suavização Exponencial, Regressão Linear e Random Forest para diversas necessidades de previsão.
+-   **Dashboard Interativo**: Uma interface web amigável construída com Streamlit, oferecendo atualizações em tempo real e controles interativos.
+-   **Visualização de Dados**: Utiliza Plotly para gráficos profissionais e interativos, permitindo a exploração detalhada de dados históricos e previsões.
+-   **Métricas de Precisão de Previsão**: Fornece métricas de avaliação chave, como Erro Absoluto Médio (MAE) e Raiz do Erro Quadrático Médio (RMSE) para avaliação do desempenho do modelo.
+-   **Decomposição Sazonal**: Analisa séries temporais em componentes de tendência, sazonalidade e resíduos para entender padrões subjacentes.
+-   **Manipulação de Dados**: Suporta o upload de arquivos CSV personalizados e inclui um conjunto de dados de exemplo para uso imediato.
+-   **Exportar Resultados**: Permite o download de dados de previsão e visualizações.
+-   **Comparação de Modelos**: Facilita a análise lado a lado do desempenho de diferentes algoritmos.
 
 ### Tecnologias Utilizadas
-- **Python 3.8+**
-- **Streamlit**: Framework de aplicação web
-- **Pandas**: Manipulação e análise de dados
-- **NumPy**: Computação numérica
-- **Scikit-learn**: Algoritmos de machine learning
-- **Plotly**: Visualizações interativas
-- **Matplotlib & Seaborn**: Plotagem estatística
-- **Statsmodels**: Modelagem estatística
+-   **Python 3.8+**
+-   **Streamlit**: Para a construção da aplicação web interativa.
+-   **Pandas**: Essencial para manipulação e análise de dados.
+-   **NumPy**: Fornece poderosas capacidades de computação numérica.
+-   **Scikit-learn**: Oferece vários algoritmos de machine learning, incluindo Regressão Linear e RandomForestRegressor.
+-   **Plotly**: Para a criação de visualizações de dados ricas e interativas.
+-   **Statsmodels**: Para modelagem estatística, incluindo ARIMA e Suavização Exponencial.
 
 ### Instalação
 
-1. Clone o repositório:
-```bash
-git clone https://github.com/galafis/Time-Series-Forecasting-Suite.git
-cd Time-Series-Forecasting-Suite
-```
+Para configurar a Time Series Forecasting Suite, siga estes passos:
 
-2. Instale as dependências:
-```bash
-pip install -r requirements.txt
-```
+1.  **Clone o repositório**:
+    ```bash
+    git clone https://github.com/galafis/Time-Series-Forecasting-Suite.git
+    cd Time-Series-Forecasting-Suite
+    ```
 
-3. Execute a aplicação:
-```bash
-streamlit run forecasting_suite.py
-```
+2.  **Instale as dependências**:
+    Certifique-se de ter o `pip` instalado. Em seguida, instale os pacotes Python necessários:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-4. Abra seu navegador em `http://localhost:8501`
+3.  **Execute a aplicação**:
+    Inicie a aplicação Streamlit a partir do seu terminal:
+    ```bash
+    streamlit run forecasting_suite.py
+    ```
+
+4.  **Acesse a aplicação**:
+    Abra seu navegador e navegue para a URL local fornecida pelo Streamlit (geralmente `http://localhost:8501` ou `http://localhost:8502`).
 
 ### Uso
 
 #### Interface Web
-1. **Entrada de Dados**: Upload de arquivo CSV ou use dados de exemplo
-2. **Exploração de Dados**: Visualize gráficos de séries temporais e estatísticas
-3. **Seleção de Modelo**: Escolha algoritmo de previsão e parâmetros
-4. **Gerar Previsão**: Crie predições para períodos especificados
-5. **Avaliar Resultados**: Compare métricas de precisão e visualizações
-6. **Exportar**: Download de previsões e gráficos
+Uma vez que a aplicação esteja em execução, você pode interagir com ela através do seu navegador web:
 
-#### Formatos de Dados Suportados
-- **Arquivos CSV**: Coluna de data + coluna(s) de valor
-- **Formatos de Data**: Detecção automática de formatos comuns
-- **Frequência**: Diária, semanal, mensal, trimestral, anual
-- **Valores Ausentes**: Tratamento automático e interpolação
-
-#### API Python
-```python
-from forecasting_suite import TimeSeriesForecaster
-
-# Inicializar forecaster
-forecaster = TimeSeriesForecaster()
-
-# Carregar dados
-data = forecaster.load_data('seus_dados.csv', date_col='data', value_col='valor')
-
-# Ajustar modelo e prever
-forecaster.fit_arima(data)
-forecast = forecaster.forecast(periods=30)
-
-# Avaliar precisão
-metrics = forecaster.evaluate_forecast(real, previsto)
-print(f"MAE: {metrics['mae']:.2f}")
-print(f"RMSE: {metrics['rmse']:.2f}")
-```
+1.  **Entrada de Dados**: Escolha usar os dados de exemplo fornecidos ou faça o upload do seu próprio arquivo CSV. Se estiver fazendo o upload, selecione as colunas de data e valor apropriadas.
+2.  **Exploração de Dados**: Revise a visão geral dos dados, valores recentes e gráficos de componentes da série temporal para entender seus dados.
+3.  **Seleção de Modelo**: Na barra lateral, selecione seu algoritmo de previsão preferido (por exemplo, Random Forest, ARIMA).
+4.  **Gerar Previsão**: Ajuste o número de dias de previsão usando o controle deslizante e clique no botão "🚀 Treinar Modelos e Gerar Previsão".
+5.  **Avaliar Resultados**: Observe as métricas de desempenho do modelo (MAE, RMSE) e o gráfico de previsão interativo.
+6.  **Exportar**: Baixe os dados de previsão e os gráficos conforme necessário.
 
 ### Modelos de Previsão
 
 #### ARIMA (AutoRegressive Integrated Moving Average)
-- **Melhor para**: Séries temporais estacionárias com tendências
-- **Parâmetros**: Seleção automática usando critérios AIC/BIC
-- **Sazonalidade**: SARIMA para padrões sazonais
+-   **Descrição**: Um modelo estatístico que usa valores passados para prever futuros, adequado para dados com tendências e sazonalidade.
+-   **Aplicação**: Melhor para séries temporais estacionárias com tendências e padrões sazonais identificáveis.
 
 #### Suavização Exponencial
-- **Simples**: Previsão básica de tendência
-- **Dupla**: Suavização de tendência e nível
-- **Tripla (Holt-Winters)**: Tendência, nível e sazonalidade
+-   **Descrição**: Uma família de modelos que preveem valores futuros com base em médias ponderadas de observações passadas, com pesos decaindo exponencialmente à medida que as observações envelhecem.
+-   **Aplicação**: Eficaz para dados com componentes de tendência e/ou sazonalidade, oferecendo variações simples, duplas e triplas (Holt-Winters).
 
 #### Modelos de Machine Learning
-- **Regressão Linear**: Previsão simples baseada em tendência
-- **Random Forest**: Reconhecimento de padrões não-lineares
-- **Engenharia de Features**: Features de lag, estatísticas móveis
-
-#### Métodos Ensemble
-- **Média de Modelos**: Combinar múltiplas previsões
-- **Ensemble Ponderado**: Ponderação baseada em performance
-- **Stacking**: Abordagem de meta-aprendizado
+-   **Regressão Linear**: Um modelo direto que prevê valores futuros ajustando uma equação linear aos dados observados.
+-   **Random Forest**: Um método de aprendizado de conjunto que constrói múltiplas árvores de decisão e mescla suas previsões para melhorar a precisão e controlar o overfitting. Excelente para capturar relações não lineares.
+-   **Engenharia de Features**: Ambos os modelos de Regressão Linear e Random Forest utilizam features engenheiradas, como valores de lag e estatísticas móveis, para aprimorar as capacidades de previsão.
 
 ### Funcionalidades
 
 #### Pré-processamento de Dados
-- **Tratamento de Valores Ausentes**: Forward fill, interpolação, imputação por média
-- **Detecção de Outliers**: Identificação estatística e visual
-- **Teste de Estacionariedade**: Teste ADF e diferenciação
-- **Decomposição Sazonal**: Decomposição STL
+-   **Tratamento de Valores Ausentes**: Interpolação automática (método linear) para preencher lacunas nos dados da série temporal.
+-   **Imposição de Frequência**: Garante que os dados sejam amostrados uniformemente (por exemplo, frequência diária) para análise consistente.
 
 #### Visualização
-- **Gráficos de Séries Temporais**: Gráficos de linha interativos com zoom
-- **Gráficos de Previsão**: Predições com intervalos de confiança
-- **Análise de Resíduos**: Distribuição de erros e autocorrelação
-- **Gráficos Sazonais**: Padrões mensais/trimestrais
+-   **Gráficos Interativos de Séries Temporais**: Alimentados por Plotly, esses gráficos permitem zoom e panorâmica para inspeção detalhada dos dados.
+-   **Gráficos de Previsão**: Representação visual das previsões, mostrando dados históricos, valores previstos e uma clara demarcação do início da previsão.
+-   **Gráfico de Componentes da Série Temporal**: Exibe os componentes de tendência, sazonalidade e resíduos decompostos da série temporal.
 
 #### Avaliação de Modelo
-- **Métricas de Precisão**: MAE, RMSE, MAPE, SMAPE
-- **Validação Cruzada**: Validação com divisão de séries temporais
-- **Análise de Resíduos**: Testes de normalidade e independência
-- **Intervalos de Previsão**: Intervalos de confiança e predição
+-   **Métricas de Precisão**: Fornece Erro Absoluto Médio (MAE) e Raiz do Erro Quadrático Médio (RMSE) para conjuntos de dados de treinamento e teste para avaliar a precisão do modelo.
 
 ### Datasets de Exemplo
-- **Preços de Ações**: Dados diários do mercado de ações
-- **Dados de Vendas**: Vendas mensais no varejo
-- **Clima**: Temperatura e precipitação
-- **Indicadores Econômicos**: PIB, inflação, desemprego
-
-### Configuração
-Personalize parâmetros de previsão:
-```python
-config = {
-    'arima_order': (1, 1, 1),
-    'seasonal_order': (1, 1, 1, 12),
-    'forecast_periods': 30,
-    'confidence_level': 0.95
-}
-```
-
-### Dicas de Performance
-- **Qualidade dos Dados**: Dados de séries temporais limpos e consistentes
-- **Seleção de Modelo**: Use validação cruzada para comparação de modelos
-- **Sazonalidade**: Considere padrões sazonais em seus dados
-- **Horizonte de Previsão**: Previsões mais curtas são geralmente mais precisas
+-   A aplicação inclui um conjunto de dados de exemplo integrado para fins de demonstração e teste imediatos.
 
 ### Contribuindo
-1. Faça um fork do repositório
-2. Crie uma branch de feature (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -am 'Adicionar nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
-5. Crie um Pull Request
+Aceitamos contribuições para aprimorar a Time Series Forecasting Suite! Por favor, siga estas diretrizes:
+
+1.  **Faça um fork do repositório**.
+2.  **Crie uma branch de feature** (`git checkout -b feature/seu-nome-da-feature`).
+3.  **Commit suas mudanças** (`git commit -am 'Adicionar nova feature'`).
+4.  **Push para a branch** (`git push origin feature/seu-nome-da-feature`).
+5.  **Crie um Pull Request**.
 
 ### Licença
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
