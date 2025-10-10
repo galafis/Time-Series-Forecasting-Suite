@@ -155,7 +155,12 @@ Para configurar a Time Series Forecasting Suite, siga estes passos:
     streamlit run forecasting_suite.py
     ```
 
-4.  **Acesse a aplicação**:
+4.  **Execute os testes**:
+    ```bash
+    python3 -m pytest test_forecasting_suite.py
+    ```
+
+5.  **Acesse a aplicação**:
     Abra seu navegador e navegue para a URL local fornecida pelo Streamlit (geralmente `http://localhost:8501` ou `http://localhost:8502`).
 
 ### Uso

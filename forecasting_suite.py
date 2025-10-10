@@ -124,16 +124,22 @@ class TimeSeriesForecaster:
     
     def fit_arima(self, data, order=(5,1,0), seasonal_order=(0,0,0,0)):
         """Fit an ARIMA model."""
-        model = ARIMA(data["value"], order=order, seasonal_order=seasonal_order)
+        # Ensure the data has a frequency set
+        data_with_freq = data["value"].asfreq("D")
+        model = ARIMA(data_with_freq, order=order, seasonal_order=seasonal_order)
         model_fit = model.fit()
         self.models["ARIMA"] = model_fit
         return model_fit
+
     def fit_exponential_smoothing(self, data, seasonal='add', seasonal_periods=7):
         """Fit an Exponential Smoothing model."""
-        model = ExponentialSmoothing(data["value"], seasonal_periods=seasonal_periods, trend='add', seasonal=seasonal)
+        # Ensure the data has a frequency set
+        data_with_freq = data["value"].asfreq("D")
+        model = ExponentialSmoothing(data_with_freq, seasonal_periods=seasonal_periods, trend='add', seasonal=seasonal)
         model_fit = model.fit()
         self.models["Exponential Smoothing"] = model_fit
         return model_fit
+
     def split_data(self, df, test_size=0.2):
         """Split data into training and testing sets."""
         split_idx = int(len(df) * (1 - test_size))
@@ -396,74 +402,58 @@ class TimeSeriesForecaster:
             xaxis_title='Date',
             yaxis_title='Value',
             template='plotly_white',
-            height=500
+            height=600
         )
         
         return fig
 
-    def create_metrics_table(self):
-        """Create a table of model metrics."""
-        metrics_data = []
-        for model_name, metrics in self.metrics.items():
-            metrics_data.append({
-                'Model': model_name,
-                'Train MAE': f"{metrics['train_mae']:.2f}",
-                'Test MAE': f"{metrics['test_mae']:.2f}",
-                'Train RMSE': f"{metrics['train_rmse']:.2f}",
-                'Test RMSE': f"{metrics['test_rmse']:.2f}"
-            })
-        
-        metrics_df = pd.DataFrame(metrics_data)
-        return metrics_df
-
-
-# Streamlit Application
+# Streamlit UI
 def main():
-    st.set_page_config(layout="wide", page_title="Time Series Forecasting Suite")
-    st.title("📈 Time Series Forecasting Suite")
-
+    st.set_page_config(page_title="Time Series Forecasting Suite", layout="wide")
+    st.title("Time Series Forecasting Suite")
+    
     forecaster = TimeSeriesForecaster()
-
-    st.sidebar.header("Upload Data")
-    uploaded_file = st.sidebar.file_uploader("Choose a CSV file", type="csv")
-
-    if uploaded_file is not None:
+    
+    # Sidebar for controls
+    st.sidebar.header("Configuration")
+    uploaded_file = st.sidebar.file_uploader("Upload your CSV", type=["csv"])
+    
+    if uploaded_file:
         data = pd.read_csv(uploaded_file)
-        date_col = st.sidebar.selectbox("Select Date Column", data.columns)
-        value_col = st.sidebar.selectbox("Select Value Column", [col for col in data.columns if col != date_col])
-        forecaster.load_data(data, date_column=date_col, value_column=value_col)
-        st.sidebar.success("Data loaded successfully!")
+        st.sidebar.subheader("Select Columns")
+        date_column = st.sidebar.selectbox("Date Column", data.columns)
+        value_column = st.sidebar.selectbox("Value Column", data.columns)
+        forecaster.load_data(data, date_column, value_column)
     else:
-        st.sidebar.info("No CSV uploaded. Using sample data.")
-        forecaster.load_data() # Load sample data if no file is uploaded
-
-    if forecaster.data is not None:
-        st.subheader("Raw Data Preview")
-        st.write(forecaster.data.head())
-
-        st.subheader("Time Series Components")
-        st.plotly_chart(forecaster.create_components_plot(), use_container_width=True)
-
-        st.sidebar.header("Model Training")
-        test_size = st.sidebar.slider("Test Size (proportion)", 0.1, 0.5, 0.2, 0.05)
-        if st.sidebar.button("Train Models & Generate Forecast"):
-            with st.spinner("Training models and generating forecasts..."):
-                forecaster.train_models(test_size=test_size)
-                st.sidebar.success("Models trained and forecasts generated!")
-
-            st.subheader("Model Performance Metrics")
-            st.dataframe(forecaster.create_metrics_table())
-
-            st.subheader("Forecast Visualization")
-            model_choice = st.selectbox("Select Model for Forecast Visualization", list(forecaster.models.keys()))
-            days_to_forecast = st.slider("Days to Forecast", 7, 365, 30, 7)
-            days_history = st.slider("Days of History to Display", 30, 365, 90, 30)
-            
-            if model_choice and forecaster.models:
-                forecaster.forecast(days=days_to_forecast, model_name=model_choice)
-                st.plotly_chart(forecaster.create_forecast_plot(model_name=model_choice, days_history=days_history), use_container_width=True)
-            else:
-                st.warning("Please train models first.")
+        forecaster.load_data() # Load sample data
+    
+    st.sidebar.subheader("Forecasting Settings")
+    forecast_days = st.sidebar.slider("Days to Forecast", 1, 365, 30)
+    model_name = st.sidebar.selectbox("Select Model", ['Random Forest', 'Linear Regression', 'ARIMA', 'Exponential Smoothing'])
+    
+    if st.sidebar.button("🚀 Train Models & Generate Forecast"):
+        with st.spinner("Training models and generating forecast..."):
+            forecaster.train_models()
+            forecaster.forecast(days=forecast_days, model_name=model_name)
+        st.sidebar.success("Done!")
+    
+    # Main content
+    st.header("Data Overview")
+    st.dataframe(forecaster.data.head())
+    
+    st.header("Time Series Components")
+    st.plotly_chart(forecaster.create_components_plot(), use_container_width=True)
+    
+    if forecaster.forecasts:
+        st.header(f"Forecast - {model_name}")
+        st.plotly_chart(forecaster.create_forecast_plot(model_name), use_container_width=True)
+        
+        st.subheader("Model Performance")
+        st.write(forecaster.metrics[model_name])
+        
+        st.subheader("Forecast Data")
+        st.dataframe(forecaster.forecasts[model_name])
 
 if __name__ == "__main__":
     main()
+
