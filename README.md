@@ -7,6 +7,20 @@
 ### Overview
 Comprehensive time series forecasting suite with multiple algorithms, interactive visualizations, and a professional web interface. This toolkit is designed for accurate time series prediction and analysis, featuring robust models like ARIMA, Exponential Smoothing, Linear Regression, and Random Forest, alongside advanced analytical capabilities.
 
+### Screenshots
+
+#### Streamlit Dashboard
+
+![Forecasting Dashboard](https://via.placeholder.com/1200x600/1f2937/ffffff?text=Time+Series+Forecasting+Dashboard)
+
+*Interactive Streamlit dashboard showing time series data, forecast results, and model metrics*
+
+#### Forecast Visualization
+
+![Forecast Results](https://via.placeholder.com/1200x400/1f2937/ffffff?text=Forecast+Visualization)
+
+*Detailed forecast plot with historical data and predicted values*
+
 ### Features
 - **Multiple Algorithms**: Implements ARIMA, Exponential Smoothing, Linear Regression, and Random Forest for diverse forecasting needs.
 - **Interactive Dashboard**: A user-friendly web interface built with Streamlit, offering real-time updates and interactive controls.
@@ -106,6 +120,12 @@ We welcome contributions to enhance the Time Series Forecasting Suite! Please fo
 
 ### License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+### Author
+
+**Gabriel Demetrios Lafis**
+- GitHub: [@galafis](https://github.com/galafis)
+- LinkedIn: [Gabriel Demetrios Lafis](https://linkedin.com/in/gabriel-lafis)
 
 ---
 
@@ -218,3 +238,9 @@ Aceitamos contribuições para aprimorar a Time Series Forecasting Suite! Por fa
 
 ### Licença
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+### Autor
+
+**Gabriel Demetrios Lafis**
+- GitHub: [@galafis](https://github.com/galafis)
+- LinkedIn: [Gabriel Demetrios Lafis](https://linkedin.com/in/gabriel-lafis)
