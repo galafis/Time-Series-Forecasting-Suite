@@ -121,11 +121,10 @@ Thumbs.db
 
 # Project specific
 *.pkl
-*.png
-*.jpg
-*.jpeg
-*.gif
 data/
 models/
 logs/
+
+# Allow example data files
+!examples/*.csv
 

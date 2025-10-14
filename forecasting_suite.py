@@ -508,10 +508,85 @@ def main():
             use_container_width=True)
 
         st.subheader("Model Performance")
-        st.write(forecaster.metrics[model_name])
+        # Display metrics in a nice table format
+        metrics_df = pd.DataFrame([forecaster.metrics[model_name]]).T
+        metrics_df.columns = ['Value']
+        metrics_df.index.name = 'Metric'
+        st.dataframe(metrics_df)
 
         st.subheader("Forecast Data")
         st.dataframe(forecaster.forecasts[model_name])
+
+        # Export functionality
+        st.subheader("📥 Export Results")
+        col1, col2 = st.columns(2)
+
+        with col1:
+            # Export forecast data as CSV
+            csv_data = forecaster.forecasts[model_name].to_csv(index=False)
+            st.download_button(
+                label="Download Forecast as CSV",
+                data=csv_data,
+                file_name=f"forecast_{model_name.replace(' ', '_').lower()}_{forecast_days}days.csv",
+                mime="text/csv"
+            )
+
+        with col2:
+            # Export metrics as JSON
+            import json
+            metrics_json = json.dumps(forecaster.metrics[model_name], indent=2)
+            st.download_button(
+                label="Download Metrics as JSON",
+                data=metrics_json,
+                file_name=f"metrics_{model_name.replace(' ', '_').lower()}.json",
+                mime="application/json"
+            )
+
+    # Model Comparison Section (if multiple models have been trained)
+    if len(forecaster.metrics) > 1:
+        st.header("📊 Model Comparison")
+
+        # Create comparison table
+        comparison_data = []
+        for model, metrics in forecaster.metrics.items():
+            comparison_data.append({
+                'Model': model,
+                'Train MAE': round(metrics['train_mae'], 4),
+                'Test MAE': round(metrics['test_mae'], 4),
+                'Train RMSE': round(metrics['train_rmse'], 4),
+                'Test RMSE': round(metrics['test_rmse'], 4)
+            })
+
+        comparison_df = pd.DataFrame(comparison_data)
+        st.dataframe(comparison_df)
+
+        # Visualize model comparison
+        import plotly.graph_objects as go
+        fig = go.Figure()
+
+        fig.add_trace(go.Bar(
+            name='Test MAE',
+            x=comparison_df['Model'],
+            y=comparison_df['Test MAE'],
+            marker_color='indianred'
+        ))
+
+        fig.add_trace(go.Bar(
+            name='Test RMSE',
+            x=comparison_df['Model'],
+            y=comparison_df['Test RMSE'],
+            marker_color='lightseagreen'
+        ))
+
+        fig.update_layout(
+            title='Model Performance Comparison',
+            xaxis_title='Model',
+            yaxis_title='Error',
+            barmode='group',
+            template='plotly_white'
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
 
 
 if __name__ == "__main__":
