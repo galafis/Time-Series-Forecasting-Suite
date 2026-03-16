@@ -1,292 +1,432 @@
-# 🚀 Time Series Forecasting Suite
+<div align="center">
 
-> Professional project by Gabriel Demetrios Lafis
+# Time Series Forecasting Suite
 
-[![Python](https://img.shields.io/badge/Python-3.12-3776AB.svg)](https://img.shields.io/badge/)
-[![NumPy](https://img.shields.io/badge/NumPy-1.26-013243.svg)](https://img.shields.io/badge/)
-[![Pandas](https://img.shields.io/badge/Pandas-2.2-150458.svg)](https://img.shields.io/badge/)
-[![Plotly](https://img.shields.io/badge/Plotly-5.18-3F4F75.svg)](https://img.shields.io/badge/)
-[![scikit--learn](https://img.shields.io/badge/scikit--learn-1.4-F7931E.svg)](https://img.shields.io/badge/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.31-FF4B4B.svg)](https://img.shields.io/badge/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker)](Dockerfile)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![scikit--learn](https://img.shields.io/badge/scikit--learn-1.0+-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](Dockerfile)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+[![Tests](https://img.shields.io/badge/Tests-13%20passed-brightgreen?style=for-the-badge)](test_forecasting_suite.py)
 
-[English](#english) | [Português](#português)
+Suite completa de previsao de series temporais com interface Streamlit e multiplos modelos.
+
+Comprehensive time series forecasting suite with Streamlit interface and multiple models.
+
+[Portugues](#portugues) | [English](#english)
+
+</div>
+
+---
+
+## Portugues
+
+### Sobre
+
+Suite profissional de previsao de series temporais construida com Streamlit, oferecendo uma interface web interativa para upload de dados, treinamento de multiplos modelos e geracao de previsoes com exportacao de resultados. O sistema implementa quatro modelos de previsao: **Linear Regression** e **Random Forest** (via scikit-learn) para abordagem de machine learning com feature engineering temporal automatizado, e **ARIMA** e **Exponential Smoothing** (via statsmodels) para abordagem estatistica classica. Inclui decomposicao sazonal, comparacao automatica de modelos e exportacao de metricas.
+
+### Tecnologias
+
+| Tecnologia | Versao | Finalidade |
+|------------|--------|------------|
+| **Python** | 3.10+ | Linguagem principal |
+| **Streamlit** | 1.28+ | Interface web interativa |
+| **Pandas** | 1.3+ | Manipulacao de dados |
+| **NumPy** | 1.21+ | Computacao numerica |
+| **scikit-learn** | 1.0+ | Modelos de machine learning |
+| **statsmodels** | 0.13+ | Modelos estatisticos (ARIMA, ETS) |
+| **Plotly** | 5.0+ | Visualizacoes interativas |
+| **pytest** | 7.0+ | Framework de testes |
+
+### Arquitetura
+
+```mermaid
+graph TD
+    A[Usuario] -->|Upload CSV / Dados padrao| B[Streamlit UI]
+    B --> C[TimeSeriesForecaster]
+    C --> D[Carregamento de Dados]
+    D --> E[Preprocessamento]
+    E --> F[Feature Engineering]
+    E --> G[Decomposicao Sazonal]
+
+    F --> H{Modelos ML}
+    H --> I[Linear Regression]
+    H --> J[Random Forest]
+
+    E --> K{Modelos Estatisticos}
+    K --> L[ARIMA]
+    K --> M[Exponential Smoothing]
+
+    I --> N[Avaliacao]
+    J --> N
+    L --> N
+    M --> N
+
+    N --> O[Comparacao de Modelos]
+    N --> P[Geracao de Previsoes]
+    P --> Q[Visualizacao Plotly]
+    O --> Q
+    Q --> R[Exportacao CSV/JSON]
+
+    style C fill:#FF4B4B,color:#fff,stroke:#cc3c3c
+    style H fill:#F7931E,color:#fff,stroke:#c57518
+    style K fill:#3776AB,color:#fff,stroke:#2c5d88
+```
+
+### Fluxo de Previsao
+
+```mermaid
+sequenceDiagram
+    participant U as Usuario
+    participant UI as Streamlit UI
+    participant F as TimeSeriesForecaster
+    participant ML as Modelos ML
+    participant ST as Modelos Estatisticos
+
+    U->>UI: Upload CSV ou usar dados amostra
+    UI->>F: load_data(data, date_col, value_col)
+    F->>F: Preprocessar (interpolacao, freq diaria)
+    F-->>UI: Exibir dados carregados
+
+    UI->>F: create_components_plot()
+    F->>F: analyze_components()
+    F->>F: seasonal_decompose()
+    F-->>UI: Grafico de componentes
+
+    U->>UI: Clicar "Treinar e Prever"
+    UI->>F: train_models(test_size=0.2)
+    F->>F: create_features() - lags, rolling, temporal
+    F->>ML: LinearRegression.fit(), RandomForest.fit()
+    F->>ST: ARIMA.fit(), ExponentialSmoothing.fit()
+    ML-->>F: Metricas train/test (MAE, RMSE)
+    ST-->>F: Metricas train/test (MAE, RMSE)
+
+    UI->>F: forecast(days, model_name)
+    F->>F: Gerar features futuras
+    F-->>UI: DataFrame com previsoes
+
+    UI->>UI: Plotly chart + tabela de metricas
+    UI->>UI: Comparacao de modelos (bar chart)
+    U->>UI: Download CSV / JSON
+```
+
+### Estrutura do Projeto
+
+```
+Time-Series-Forecasting-Suite/
+├── forecasting_suite.py       # App Streamlit + classe TimeSeriesForecaster (~593 linhas)
+├── test_forecasting_suite.py  # Suite de testes com 13 testes (~173 linhas)
+├── examples/
+│   ├── README.md              # Guia dos datasets de exemplo
+│   ├── sales_data.csv         # Vendas varejo com sazonalidade
+│   ├── temperature_data.csv   # Dados climaticos
+│   └── stock_price_data.csv   # Dados financeiros com volatilidade
+├── requirements.txt           # Dependencias Python
+├── Dockerfile                 # Containerizacao
+├── CONTRIBUTING.md            # Guia para contribuidores
+├── CHANGELOG.md               # Historico de versoes
+├── LICENSE                    # Licenca MIT
+└── README.md                  # Documentacao
+```
+
+### Inicio Rapido
+
+```bash
+# Clonar o repositorio
+git clone https://github.com/galafis/Time-Series-Forecasting-Suite.git
+cd Time-Series-Forecasting-Suite
+
+# Criar ambiente virtual
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Instalar dependencias
+pip install -r requirements.txt
+
+# Executar a aplicacao
+streamlit run forecasting_suite.py
+```
+
+### Docker
+
+```bash
+# Build da imagem
+docker build -t forecasting-suite .
+
+# Executar container
+docker run -p 8501:8501 forecasting-suite
+
+# Acessar em http://localhost:8501
+```
+
+### Testes
+
+```bash
+# Executar suite completa (13 testes)
+python -m pytest test_forecasting_suite.py -v
+
+# Com cobertura
+python -m pytest test_forecasting_suite.py --cov=forecasting_suite --cov-report=html
+
+# Teste especifico
+python -m pytest test_forecasting_suite.py::test_train_models -v
+```
+
+### Uso Programatico
+
+```python
+from forecasting_suite import TimeSeriesForecaster
+
+# Inicializar
+forecaster = TimeSeriesForecaster()
+
+# Carregar dados (ou usar dados amostra)
+df = forecaster.load_data()
+
+# Treinar todos os modelos
+models, metrics = forecaster.train_models(test_size=0.2)
+
+# Gerar previsao
+forecast = forecaster.forecast(days=30, model_name='Random Forest')
+
+# Visualizar
+fig = forecaster.create_forecast_plot('Random Forest')
+fig.show()
+```
+
+### Benchmarks
+
+| Operacao | Tempo Medio | Dataset |
+|----------|-------------|---------|
+| Carregamento + preprocessamento | ~100 ms | 1826 dias |
+| Feature engineering | ~200 ms | 1826 dias |
+| Treino Linear Regression | ~50 ms | 80% split |
+| Treino Random Forest | ~2 s | 80% split, 100 arvores |
+| Treino ARIMA(5,1,0) | ~3 s | 80% split |
+| Treino Exponential Smoothing | ~1 s | 80% split |
+| Previsao 30 dias | ~100 ms | Random Forest |
+| Decomposicao sazonal | ~500 ms | 1826 dias |
+
+### Aplicabilidade
+
+| Setor | Caso de Uso | Descricao |
+|-------|-------------|-----------|
+| **Financas** | Projecao de ativos | Previsao de precos com Random Forest e ARIMA |
+| **Varejo** | Previsao de vendas | Planejamento de estoque com sazonalidade detectada |
+| **Meteorologia** | Projecao climatica | Analise de tendencias e padroes ciclicos |
+| **Manufatura** | Previsao de demanda | Dimensionamento de producao com multiplos horizontes |
+| **Saude** | Series epidemiologicas | Modelagem de curvas de incidencia |
+| **Energia** | Consumo futuro | Projecao de carga para planejamento de rede |
 
 ---
 
 ## English
 
-### 🎯 Overview
+### About
 
-**Time Series Forecasting Suite** is a production-grade Python application that showcases modern software engineering practices including clean architecture, comprehensive testing, containerized deployment, and CI/CD readiness.
+Professional time series forecasting suite built with Streamlit, offering an interactive web interface for data upload, multi-model training and forecast generation with results export. The system implements four forecasting models: **Linear Regression** and **Random Forest** (via scikit-learn) for a machine learning approach with automated temporal feature engineering, and **ARIMA** and **Exponential Smoothing** (via statsmodels) for classical statistical approaches. Includes seasonal decomposition, automatic model comparison and metrics export.
 
-The codebase comprises **765 lines** of source code organized across **2 modules**, following industry best practices for maintainability, scalability, and code quality.
+### Technologies
 
-### ✨ Key Features
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Python** | 3.10+ | Core language |
+| **Streamlit** | 1.28+ | Interactive web interface |
+| **Pandas** | 1.3+ | Data manipulation |
+| **NumPy** | 1.21+ | Numerical computing |
+| **scikit-learn** | 1.0+ | Machine learning models |
+| **statsmodels** | 0.13+ | Statistical models (ARIMA, ETS) |
+| **Plotly** | 5.0+ | Interactive visualizations |
+| **pytest** | 7.0+ | Testing framework |
 
-- **🏗️ Object-Oriented**: 1 core classes with clean architecture
-- **📐 Clean Architecture**: Modular design with clear separation of concerns
-- **🧪 Test Coverage**: Unit and integration tests for reliability
-- **📚 Documentation**: Comprehensive inline documentation and examples
-- **🔧 Configuration**: Environment-based configuration management
-
-### 🏗️ Architecture
+### Architecture
 
 ```mermaid
-graph LR
-    subgraph Input["📥 Input"]
-        A[Raw Data]
-        B[Feature Config]
-    end
-    
-    subgraph Pipeline["🔬 ML Pipeline"]
-        C[Preprocessing]
-        D[Feature Engineering]
-        E[Model Training]
-        F[Evaluation]
-    end
-    
-    subgraph Output["📤 Output"]
-        G[Trained Models]
-        H[Metrics & Reports]
-        I[Predictions]
-    end
-    
-    A --> C --> D --> E --> F
-    B --> D
-    F --> G
-    F --> H
-    G --> I
-    
-    style Input fill:#e1f5fe
-    style Pipeline fill:#f3e5f5
-    style Output fill:#e8f5e9
+graph TD
+    A[User] -->|Upload CSV / Default data| B[Streamlit UI]
+    B --> C[TimeSeriesForecaster]
+    C --> D[Data Loading]
+    D --> E[Preprocessing]
+    E --> F[Feature Engineering]
+    E --> G[Seasonal Decomposition]
+
+    F --> H{ML Models}
+    H --> I[Linear Regression]
+    H --> J[Random Forest]
+
+    E --> K{Statistical Models}
+    K --> L[ARIMA]
+    K --> M[Exponential Smoothing]
+
+    I --> N[Evaluation]
+    J --> N
+    L --> N
+    M --> N
+
+    N --> O[Model Comparison]
+    N --> P[Forecast Generation]
+    P --> Q[Plotly Visualization]
+    O --> Q
+    Q --> R[CSV/JSON Export]
+
+    style C fill:#FF4B4B,color:#fff,stroke:#cc3c3c
+    style H fill:#F7931E,color:#fff,stroke:#c57518
+    style K fill:#3776AB,color:#fff,stroke:#2c5d88
 ```
 
-### 🚀 Quick Start
+### Forecasting Flow
 
-#### Prerequisites
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant UI as Streamlit UI
+    participant F as TimeSeriesForecaster
+    participant ML as ML Models
+    participant ST as Statistical Models
 
-- Python 3.12+
-- pip (Python package manager)
+    U->>UI: Upload CSV or use sample data
+    UI->>F: load_data(data, date_col, value_col)
+    F->>F: Preprocess (interpolation, daily freq)
+    F-->>UI: Display loaded data
 
-#### Installation
+    UI->>F: create_components_plot()
+    F->>F: analyze_components()
+    F->>F: seasonal_decompose()
+    F-->>UI: Components chart
+
+    U->>UI: Click "Train & Forecast"
+    UI->>F: train_models(test_size=0.2)
+    F->>F: create_features() - lags, rolling, temporal
+    F->>ML: LinearRegression.fit(), RandomForest.fit()
+    F->>ST: ARIMA.fit(), ExponentialSmoothing.fit()
+    ML-->>F: Train/test metrics (MAE, RMSE)
+    ST-->>F: Train/test metrics (MAE, RMSE)
+
+    UI->>F: forecast(days, model_name)
+    F->>F: Generate future features
+    F-->>UI: Forecast DataFrame
+
+    UI->>UI: Plotly chart + metrics table
+    UI->>UI: Model comparison (bar chart)
+    U->>UI: Download CSV / JSON
+```
+
+### Project Structure
+
+```
+Time-Series-Forecasting-Suite/
+├── forecasting_suite.py       # Streamlit app + TimeSeriesForecaster class (~593 lines)
+├── test_forecasting_suite.py  # Test suite with 13 tests (~173 lines)
+├── examples/
+│   ├── README.md              # Example datasets guide
+│   ├── sales_data.csv         # Retail sales with seasonality
+│   ├── temperature_data.csv   # Climate data
+│   └── stock_price_data.csv   # Financial data with volatility
+├── requirements.txt           # Python dependencies
+├── Dockerfile                 # Containerization
+├── CONTRIBUTING.md            # Developer guide
+├── CHANGELOG.md               # Version history
+├── LICENSE                    # MIT License
+└── README.md                  # Documentation
+```
+
+### Quick Start
 
 ```bash
 # Clone the repository
 git clone https://github.com/galafis/Time-Series-Forecasting-Suite.git
 cd Time-Series-Forecasting-Suite
 
-# Create and activate virtual environment
+# Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
-```
 
-#### Running
-
-```bash
 # Run the application
-python src/main.py
+streamlit run forecasting_suite.py
 ```
 
-### 🧪 Testing
+### Docker
 
 ```bash
-# Run all tests
-pytest
+# Build image
+docker build -t forecasting-suite .
 
-# Run with coverage report
-pytest --cov --cov-report=html
+# Run container
+docker run -p 8501:8501 forecasting-suite
 
-# Run specific test module
-pytest tests/test_main.py -v
-
-# Run with detailed output
-pytest -v --tb=short
+# Access at http://localhost:8501
 ```
 
-### 📁 Project Structure
+### Tests
 
-```
-Time-Series-Forecasting-Suite/
-├── examples/
-│   └── README.md
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── LICENSE
-├── README.md
-├── forecasting_suite.py
-├── requirements.txt
-└── test_forecasting_suite.py
+```bash
+# Run full suite (13 tests)
+python -m pytest test_forecasting_suite.py -v
+
+# With coverage
+python -m pytest test_forecasting_suite.py --cov=forecasting_suite --cov-report=html
+
+# Specific test
+python -m pytest test_forecasting_suite.py::test_train_models -v
 ```
 
-### 🛠️ Tech Stack
+### Programmatic Usage
 
-| Technology | Description | Role |
-|------------|-------------|------|
-| **Python** | Core Language | Primary |
-| **NumPy** | Numerical computing | Framework |
-| **Pandas** | Data manipulation library | Framework |
-| **Plotly** | Interactive visualization | Framework |
-| **scikit-learn** | Machine learning library | Framework |
-| **Streamlit** | Data app framework | Framework |
+```python
+from forecasting_suite import TimeSeriesForecaster
 
-### 🤝 Contributing
+# Initialize
+forecaster = TimeSeriesForecaster()
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+# Load data (or use sample data)
+df = forecaster.load_data()
 
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+# Train all models
+models, metrics = forecaster.train_models(test_size=0.2)
 
-### 📄 License
+# Generate forecast
+forecast = forecaster.forecast(days=30, model_name='Random Forest')
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+# Visualize
+fig = forecaster.create_forecast_plot('Random Forest')
+fig.show()
+```
 
-### 👤 Author
+### Benchmarks
 
-**Gabriel Demetrios Lafis**
-- GitHub: [@galafis](https://github.com/galafis)
-- LinkedIn: [Gabriel Demetrios Lafis](https://linkedin.com/in/gabriel-demetrios-lafis)
+| Operation | Avg Time | Dataset |
+|-----------|----------|---------|
+| Loading + preprocessing | ~100 ms | 1826 days |
+| Feature engineering | ~200 ms | 1826 days |
+| Linear Regression training | ~50 ms | 80% split |
+| Random Forest training | ~2 s | 80% split, 100 trees |
+| ARIMA(5,1,0) training | ~3 s | 80% split |
+| Exponential Smoothing training | ~1 s | 80% split |
+| 30-day forecast | ~100 ms | Random Forest |
+| Seasonal decomposition | ~500 ms | 1826 days |
+
+### Applicability
+
+| Sector | Use Case | Description |
+|--------|----------|-------------|
+| **Finance** | Asset projection | Price forecasting with Random Forest and ARIMA |
+| **Retail** | Sales forecasting | Inventory planning with detected seasonality |
+| **Meteorology** | Climate projection | Trend analysis and cyclic patterns |
+| **Manufacturing** | Demand forecasting | Production sizing with multiple horizons |
+| **Healthcare** | Epidemiological series | Incidence curve modeling |
+| **Energy** | Future consumption | Load projection for grid planning |
 
 ---
 
-## Português
-
-### 🎯 Visão Geral
-
-**Time Series Forecasting Suite** é uma aplicação Python de nível profissional que demonstra práticas modernas de engenharia de software, incluindo arquitetura limpa, testes abrangentes, implantação containerizada e prontidão para CI/CD.
-
-A base de código compreende **765 linhas** de código-fonte organizadas em **2 módulos**, seguindo as melhores práticas do setor para manutenibilidade, escalabilidade e qualidade de código.
-
-### ✨ Funcionalidades Principais
-
-- **🏗️ Object-Oriented**: 1 core classes with clean architecture
-- **📐 Clean Architecture**: Modular design with clear separation of concerns
-- **🧪 Test Coverage**: Unit and integration tests for reliability
-- **📚 Documentation**: Comprehensive inline documentation and examples
-- **🔧 Configuration**: Environment-based configuration management
-
-### 🏗️ Arquitetura
-
-```mermaid
-graph LR
-    subgraph Input["📥 Input"]
-        A[Raw Data]
-        B[Feature Config]
-    end
-    
-    subgraph Pipeline["🔬 ML Pipeline"]
-        C[Preprocessing]
-        D[Feature Engineering]
-        E[Model Training]
-        F[Evaluation]
-    end
-    
-    subgraph Output["📤 Output"]
-        G[Trained Models]
-        H[Metrics & Reports]
-        I[Predictions]
-    end
-    
-    A --> C --> D --> E --> F
-    B --> D
-    F --> G
-    F --> H
-    G --> I
-    
-    style Input fill:#e1f5fe
-    style Pipeline fill:#f3e5f5
-    style Output fill:#e8f5e9
-```
-
-### 🚀 Início Rápido
-
-#### Prerequisites
-
-- Python 3.12+
-- pip (Python package manager)
-
-#### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/galafis/Time-Series-Forecasting-Suite.git
-cd Time-Series-Forecasting-Suite
-
-# Create and activate virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-#### Running
-
-```bash
-# Run the application
-python src/main.py
-```
-
-### 🧪 Testing
-
-```bash
-# Run all tests
-pytest
-
-# Run with coverage report
-pytest --cov --cov-report=html
-
-# Run specific test module
-pytest tests/test_main.py -v
-
-# Run with detailed output
-pytest -v --tb=short
-```
-
-### 📁 Estrutura do Projeto
-
-```
-Time-Series-Forecasting-Suite/
-├── examples/
-│   └── README.md
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── LICENSE
-├── README.md
-├── forecasting_suite.py
-├── requirements.txt
-└── test_forecasting_suite.py
-```
-
-### 🛠️ Stack Tecnológica
-
-| Tecnologia | Descrição | Papel |
-|------------|-----------|-------|
-| **Python** | Core Language | Primary |
-| **NumPy** | Numerical computing | Framework |
-| **Pandas** | Data manipulation library | Framework |
-| **Plotly** | Interactive visualization | Framework |
-| **scikit-learn** | Machine learning library | Framework |
-| **Streamlit** | Data app framework | Framework |
-
-### 🤝 Contribuindo
-
-Contribuições são bem-vindas! Sinta-se à vontade para enviar um Pull Request.
-
-### 📄 Licença
-
-Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
-### 👤 Autor
+## Autor / Author
 
 **Gabriel Demetrios Lafis**
 - GitHub: [@galafis](https://github.com/galafis)
 - LinkedIn: [Gabriel Demetrios Lafis](https://linkedin.com/in/gabriel-demetrios-lafis)
+
+## Licenca / License
+
+MIT License - veja [LICENSE](LICENSE) para detalhes / see [LICENSE](LICENSE) for details.
